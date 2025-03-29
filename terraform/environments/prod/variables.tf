@@ -59,6 +59,20 @@ variable "db_password" {
   sensitive   = true
 }
 
+# OpenSearch Configuration
+variable "opensearch_master_user" {
+  description = "Master username for OpenSearch"
+  type        = string
+  default     = "admin"
+}
+
+variable "opensearch_master_password" {
+  description = "Master password for OpenSearch"
+  type        = string
+  sensitive   = true
+  default   = "Hackat0nAIDvogado@"
+}
+
 variable "app_version" {
   description = "Version tag of the container image to deploy"
   type        = string

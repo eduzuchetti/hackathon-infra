@@ -52,7 +52,7 @@ module "ecr" {
   
   # Production settings
   scan_on_push = true
-  image_tag_mutability = "IMMUTABLE"  # Prevents tag overwriting
+  image_tag_mutability = "MUTABLE"  # Prevents tag overwriting
   
   # More restrictive lifecycle policy for production
   lifecycle_policy_rules = [
@@ -93,7 +93,7 @@ module "ecr" {
 # S3 bucket for application assets
 module "app_storage" {
   source      = "../../modules/s3"
-  bucket_name = "${var.project_name}-assets-${var.environment}"
+  bucket_name = "${var.project_name}-${var.environment}-raw-data"
 
   versioning_enabled = true
   
@@ -157,11 +157,27 @@ module "database" {
   }
 }
 
+# Create the SSM parameter for the database password
+resource "aws_ssm_parameter" "db_password" {
+  name        = "/${var.project_name}/${var.environment}/db_password"
+  description = "Password for RDS database"
+  type        = "SecureString"
+  value       = var.db_password
+
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
 # ECS Cluster and Service
 module "app_cluster" {
   source        = "../../modules/ecs"
-  cluster_name  = "${var.project_name}-cluster-${var.environment}"
-  service_name  = "${var.project_name}-service-${var.environment}"
+  cluster_name  = "${var.project_name}-${var.environment}-cluster"
+  service_name  = "${var.project_name}-${var.environment}-service-JustAPI"
+  
+  project_name  = var.project_name
+  environment   = var.environment
   
   vpc_id        = module.vpc.vpc_id
   subnet_ids    = module.vpc.private_subnet_ids  # Using private subnets for ECS tasks in production
@@ -171,12 +187,13 @@ module "app_cluster" {
   
   container_name  = "${var.project_name}-app"
   container_image = "${module.ecr.repository_url}:${var.app_version}"
-  container_port  = 3000
+  container_port  = 8080
   
+
   # Higher resources for production
-  task_cpu    = "1024"
-  task_memory = "2048"
-  desired_count = 2
+  task_cpu    = "256"
+  task_memory = "512"
+  desired_count = 1
   
   # Enable container insights for better monitoring
   container_insights = true
@@ -226,12 +243,55 @@ module "app_cluster" {
   secrets = [
     {
       name      = "DB_PASSWORD"
-      valueFrom = "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:parameter/${var.project_name}/${var.environment}/db_password"
+      valueFrom = aws_ssm_parameter.db_password.arn
     }
   ]
   
   tags = {
     Name        = "${var.project_name}-ecs-${var.environment}"
     Environment = var.environment
+  }
+}
+
+# OpenSearch Service
+module "opensearch" {
+  source = "../../modules/opensearch"
+  
+  domain_name = "${var.project_name}-search-${var.environment}"
+  
+  # Production configuration
+  instance_type   = "t3.small.search"  # Still using free tier instance, can be upgraded as needed
+  instance_count  = 1
+  ebs_volume_size = 10
+  
+  # Enhanced security for production
+  encrypt_at_rest         = true
+  node_to_node_encryption = true
+  enforce_https           = true
+  advanced_security_enabled = true
+  
+  # Security settings
+  master_user_name     = var.opensearch_master_user
+  master_user_password = var.opensearch_master_password
+  
+  # Tags
+  tags = {
+    Name        = "${var.project_name}-search-${var.environment}"
+    Environment = var.environment
+  }
+}
+
+module "github_oidc" {
+  source = "../../modules/github-oidc"
+
+  github_org                 = "eliezerfrocha"
+  # ecr_repository_arn         = module.ecr.repository_arn
+  ecs_cluster_arn            = module.app_cluster.cluster_arn
+  ecs_task_execution_role_arn = module.app_cluster.task_execution_role_arn
+  ecs_task_role_arn          = module.app_cluster.task_role_arn
+  
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
   }
 } 

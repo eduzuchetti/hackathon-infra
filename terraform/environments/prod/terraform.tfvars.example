@@ -12,4 +12,8 @@ create_nat_gateway = true
 db_name           = "hackathon"
 db_username       = "admin"
 db_password       = "REPLACE_WITH_SECURE_PASSWORD"
-app_version       = "v1.0.0" 
+app_version       = "v1.0.0"
+
+# OpenSearch
+opensearch_master_user     = "admin"
+opensearch_master_password = "REPLACE_WITH_SECURE_PASSWORD" 

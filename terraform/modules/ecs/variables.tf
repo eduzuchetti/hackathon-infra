@@ -40,6 +40,16 @@ variable "service_name" {
   type        = string
 }
 
+variable "project_name" {
+  description = "Name of the project"
+  type        = string
+}
+
+variable "environment" {
+  description = "Name of the environment (dev, prod, etc.)"
+  type        = string
+}
+
 variable "log_retention_in_days" {
   description = "Number of days to retain CloudWatch logs"
   type        = number

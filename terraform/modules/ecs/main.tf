@@ -90,6 +90,34 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+# Additional policy for SSM Parameter Store access
+resource "aws_iam_policy" "ssm_parameter_access" {
+  name        = "${var.service_name}-ssm-parameter-access"
+  description = "Allow access to SSM parameters for ${var.service_name}"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameters",
+          "ssm:GetParameter",
+          "ssm:GetParametersByPath"
+        ]
+        Resource = [
+          "arn:aws:ssm:*:*:parameter/${var.project_name}/${var.environment}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_ssm_policy" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = aws_iam_policy.ssm_parameter_access.arn
+}
+
 # Task IAM Role
 resource "aws_iam_role" "ecs_task_role" {
   name = "${var.service_name}-task-role"
@@ -174,8 +202,8 @@ resource "aws_ecs_service" "this" {
   cluster                            = aws_ecs_cluster.this.id
   task_definition                    = aws_ecs_task_definition.this.arn
   desired_count                      = var.desired_count
-  launch_type                        = var.launch_type
-  platform_version                   = var.launch_type == "FARGATE" ? var.platform_version : null
+  launch_type                        = length(var.capacity_provider_strategy) == 0 ? var.launch_type : null
+  platform_version                   = length(var.capacity_provider_strategy) == 0 && var.launch_type == "FARGATE" ? var.platform_version : null
   health_check_grace_period_seconds  = var.health_check_grace_period_seconds
   force_new_deployment               = var.force_new_deployment
   enable_execute_command             = var.enable_execute_command

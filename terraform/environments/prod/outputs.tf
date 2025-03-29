@@ -28,6 +28,16 @@ output "ecr_repository_arn" {
   value       = module.ecr.repository_arn
 }
 
+output "opensearch_endpoint" {
+  description = "Endpoint of the OpenSearch domain"
+  value       = module.opensearch.endpoint
+}
+
+output "opensearch_dashboard_endpoint" {
+  description = "Dashboard endpoint of the OpenSearch domain"
+  value       = module.opensearch.dashboard_endpoint
+}
+
 output "s3_bucket_name" {
   description = "Name of the S3 bucket for application assets"
   value       = module.app_storage.bucket_id
@@ -81,4 +91,14 @@ output "ecs_task_execution_role_arn" {
 output "ecs_task_role_arn" {
   description = "ARN of the ECS task role"
   value       = module.app_cluster.task_role_arn
+}
+
+output "github_actions_role_arn" {
+  description = "ARN of the IAM role for GitHub Actions"
+  value       = module.github_oidc.role_arn
+}
+
+output "github_actions_role_name" {
+  description = "Name of the IAM role for GitHub Actions"
+  value       = module.github_oidc.role_name
 } 
