@@ -1,0 +1,15 @@
+aws_region        = "us-east-1"
+aws_account_id    = "123456789012"
+project_name      = "hackathon"
+environment       = "prod"
+
+# VPC Configuration
+vpc_cidr          = "10.0.0.0/16"
+az_count          = 3
+create_nat_gateway = true
+
+# Database
+db_name           = "hackathon"
+db_username       = "admin"
+db_password       = "REPLACE_WITH_SECURE_PASSWORD"
+app_version       = "v1.0.0" 
