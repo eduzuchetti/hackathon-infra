@@ -170,6 +170,31 @@ resource "aws_ssm_parameter" "db_password" {
   }
 }
 
+# Application Load Balancer for ECS service
+module "app_alb" {
+  source = "../../modules/alb"
+  
+  name       = "${var.project_name}-${var.environment}"
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.public_subnet_ids
+  
+  target_port = 8080
+  
+  health_check_path = "/health"
+  
+  # In production, you might want to use HTTPS with a certificate
+  # certificate_arn = "arn:aws:acm:REGION:ACCOUNT:certificate/CERTIFICATE_ID"
+  # http_to_https_redirect = true
+  
+  # Enable deletion protection in production
+  enable_deletion_protection = true
+  
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
 # ECS Cluster and Service
 module "app_cluster" {
   source        = "../../modules/ecs"
@@ -251,6 +276,13 @@ module "app_cluster" {
     Name        = "${var.project_name}-ecs-${var.environment}"
     Environment = var.environment
   }
+  
+  load_balancer = {
+    target_group_arn = module.app_alb.target_group_arn
+  }
+  
+  # Configure health check grace period for load balancer
+  health_check_grace_period_seconds = 120
 }
 
 # OpenSearch Service

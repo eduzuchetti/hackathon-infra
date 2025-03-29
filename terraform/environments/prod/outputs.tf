@@ -101,4 +101,14 @@ output "github_actions_role_arn" {
 output "github_actions_role_name" {
   description = "Name of the IAM role for GitHub Actions"
   value       = module.github_oidc.role_name
+}
+
+output "alb_dns_name" {
+  description = "DNS name of the Application Load Balancer"
+  value       = module.app_alb.alb_dns_name
+}
+
+output "alb_zone_id" {
+  description = "Zone ID of the Application Load Balancer"
+  value       = module.app_alb.alb_zone_id
 } 
