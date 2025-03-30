@@ -51,9 +51,6 @@ const Processos: React.FC = () => {
       <Box sx={{ pt: 3, pb: 5 }}>
         {/* Header with title and add button */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#333333', m: 0 }}>
-            Processos
-          </Typography>
           <Button
             variant="contained"
             color="primary"
@@ -66,34 +63,13 @@ const Processos: React.FC = () => {
         
         {/* Search Section */}
         <Paper sx={{ p: 3, mb: 4, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 3, color: '#333333' }}>
+          <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
             Busca
           </Typography>
-          
+
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
-                Número do Processo
-              </Typography>
-              <TextField
-                fullWidth
-                placeholder="Pesquisa"
-                variant="outlined"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton>
-                        <SearchIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                size="small"
-              />
-            </Grid>
-            
             <Grid item xs={12} md={8}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
+              <Typography variant="body1" gutterBottom color="primary" fontWeight="bold">
                 Período
               </Typography>
               <Grid container spacing={2}>
@@ -117,7 +93,7 @@ const Processos: React.FC = () => {
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
+              <Typography variant="body1" gutterBottom color="primary" fontWeight="bold">
                 Polo Ativo
               </Typography>
               <TextField
@@ -128,7 +104,7 @@ const Processos: React.FC = () => {
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom fontWeight="bold">
+              <Typography variant="body1" gutterBottom color="primary" fontWeight="bold">
                 Polo Passivo
               </Typography>
               <TextField
@@ -142,7 +118,7 @@ const Processos: React.FC = () => {
         
         {/* Process List Section */}
         <Paper sx={{ p: 3, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 3, color: '#333333' }}>
+          <Typography variant="h5" gutterBottom color="primary" sx={{ fontWeight: 'bold', mb: 3 }}>
             Lista de Processos
           </Typography>
           
@@ -150,12 +126,12 @@ const Processos: React.FC = () => {
             <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Número do Processo</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Prazo Fatal</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Última Movimentação</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Polo Ativo</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Polo Passivo</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Saneamento</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Número do Processo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Prazo Fatal</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Última Movimentação</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Polo Ativo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Polo Passivo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#1B5E20' }}>Saneamento</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

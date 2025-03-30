@@ -49,13 +49,13 @@ const Painel: React.FC = () => {
       <Box sx={{ pt: 3, pb: 5 }}>
         {/* Search Section */}
         <Paper sx={{ p: 3, mb: 4 }}>
-          <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'medium', mb: 3 }}>
+          <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
             Busca
           </Typography>
           
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" color="primary" sx={{ fontWeight: 'bold' }} gutterBottom>
                 Número do Projeto
               </Typography>
               <TextField
@@ -77,7 +77,7 @@ const Painel: React.FC = () => {
             </Grid>
             
             <Grid item xs={12} md={8}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" color="primary" sx={{ fontWeight: 'bold' }} gutterBottom>
                 Período
               </Typography>
               <Grid container spacing={2}>
@@ -103,7 +103,7 @@ const Painel: React.FC = () => {
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" color="primary" sx={{ fontWeight: 'bold' }} gutterBottom>
                 Polo Ativo
               </Typography>
               <TextField
@@ -115,7 +115,7 @@ const Painel: React.FC = () => {
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" color="primary" sx={{ fontWeight: 'bold' }} gutterBottom>
                 Polo Passivo
               </Typography>
               <TextField
