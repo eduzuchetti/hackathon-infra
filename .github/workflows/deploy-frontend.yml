@@ -112,6 +112,14 @@ jobs:
           name: frontend-build
           path: build
 
+      - name: Checkout code for assets
+        uses: actions/checkout@v4
+
+      - name: Copy assets to build directory
+        run: |
+          mkdir -p build/assets
+          cp -r packages/frontend/public/assets/* build/assets/
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:

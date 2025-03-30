@@ -28,9 +28,9 @@ const configurations = {
     audience: 'https://api-staging.yourdomain.com',
   },
   prod: {
-    domain: 'hackathon.auth0.comhackathon.auth0.com/',
-    clientId: 'JKt0LY9CiHkcQiiuwxwtayUZbBZB2ava',
-    audience: 'advodev.api',
+    domain: 'hackathon.auth0.com',
+    clientId: 'your-prod-client-id',
+    audience: 'https://api.yourdomain.com',
   },
 };
 
