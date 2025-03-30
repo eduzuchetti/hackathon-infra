@@ -108,17 +108,16 @@ const Home: React.FC = () => {
           BEM-VINDO AO
         </Typography>
         
-        <GradientText 
-          variant="h2" 
-          sx={{ 
-            fontWeight: 800, 
-            textAlign: 'center',
+        <Box
+          component="img"
+          src="/assets/Logo-JurisAssist.png"
+          alt="JurisAssist"
+          sx={{
             mb: 3,
-            fontSize: { xs: '2.5rem', md: '3.75rem' }
+            height: { xs: 120, md: 160 },
+            maxWidth: '100%'
           }}
-        >
-          JurisAssist
-        </GradientText>
+        />
         
         <Typography 
           variant="h5" 
