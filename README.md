@@ -1,67 +1,155 @@
 # Hackathon Infrastructure
 
-This repository contains Terraform code for provisioning AWS infrastructure for hackathon projects.
+Este repositório contém código Terraform para provisionar infraestrutura AWS para projetos de hackathon.
 
-## Infrastructure Components
+## Componentes da Infraestrutura
 
-- **RDS MySQL**: Database for application data
-- **ECS Cluster and Service**: Container orchestration for applications
-- **S3 Buckets**: Object storage for static assets and other files
+- **RDS MySQL**: Banco de dados para dados da aplicação
+- **ECS Cluster e Serviço**: Orquestração de contêineres para aplicações
+- **S3 Buckets**: Armazenamento de objetos para assets estáticos e outros arquivos
+- **VPC**: Rede isolada para os recursos da aplicação
+- **ALB (Application Load Balancer)**: Balanceador de carga para distribuir tráfego
+- **ECR (Elastic Container Registry)**: Registro para imagens de contêineres
+- **ElastiCache**: Serviço de cache em memória
+- **OpenSearch**: Serviço de busca e análise de logs
 
-## Requirements
+## Requisitos
 
 - Terraform v1.11.x
-- AWS CLI configured with appropriate credentials
+- AWS CLI configurado com credenciais apropriadas
 - Git
+- Acesso à conta AWS com permissões adequadas
 
-## Getting Started
+## Começando
 
-1. Clone this repository
-2. Navigate to the environment directory you want to deploy:
+1. Clone este repositório
+2. Configure as variáveis de ambiente necessárias:
 
 ```bash
-cd terraform/environments/dev
+cp terraform/terraform.tfvars.example terraform/terraform.tfvars
 ```
 
-3. Initialize Terraform:
+3. Edite o arquivo `terraform.tfvars` com seus valores específicos
+
+4. Inicialize o Terraform:
 
 ```bash
+cd terraform
 terraform init
 ```
 
-4. Review the deployment plan:
+5. Revise o plano de implantação:
 
 ```bash
 terraform plan
 ```
 
-5. Apply the changes:
+6. Aplique as mudanças:
 
 ```bash
 terraform apply
 ```
 
-## Repository Structure
+## Estrutura do Repositório
 
 ```
 terraform/
-├── modules/                # Reusable Terraform modules
-│   ├── rds/                # RDS MySQL module
-│   ├── ecs/                # ECS cluster and service module
-│   └── s3/                 # S3 bucket module
-└── environments/           # Environment-specific configurations
-    ├── dev/                # Development environment
-    └── prod/               # Production environment
+├── main.tf                 # Configuração principal do Terraform
+├── variables.tf            # Definição de variáveis
+├── outputs.tf              # Saídas do Terraform
+├── terraform.tfvars.example # Exemplo de arquivo de variáveis
+├── modules/                # Módulos Terraform reutilizáveis
+│   ├── alb/                # Módulo Application Load Balancer
+│   ├── ecr/                # Módulo Elastic Container Registry
+│   ├── ecs/                # Módulo ECS cluster e serviço
+│   ├── elasticache/        # Módulo ElastiCache
+│   ├── frontend/           # Módulo para aplicações frontend
+│   ├── github-oidc/        # Módulo para autenticação OIDC com GitHub
+│   ├── opensearch/         # Módulo OpenSearch
+│   ├── rds/                # Módulo RDS MySQL
+│   ├── s3/                 # Módulo S3 bucket
+│   └── vpc/                # Módulo VPC
 ```
 
-## Best Practices
+## Módulos Detalhados
 
-- Use remote state with locking
-- Keep sensitive values in AWS Secrets Manager or use AWS SSM Parameter Store
-- Use consistent naming conventions
-- Tag all resources appropriately
-- Use minimum IAM permissions
+### VPC
+Configura uma Virtual Private Cloud com sub-redes públicas e privadas, tabelas de rotas e gateways.
 
-## Contributing
+### RDS
+Provisiona um banco de dados MySQL com configurações de alta disponibilidade e backup.
 
-Please follow the existing code structure and naming conventions when adding new features or modules. 
+### ECS
+Configura um cluster ECS com serviços e definições de tarefas para execução de contêineres.
+
+### S3
+Cria buckets S3 para armazenamento de arquivos com políticas de acesso apropriadas.
+
+### ALB
+Configura um Application Load Balancer para distribuir tráfego entre instâncias ECS.
+
+### ElastiCache
+Provisiona clusters Redis para armazenamento em cache.
+
+### OpenSearch
+Configura domínios OpenSearch para busca e análise de logs.
+
+## Melhores Práticas
+
+- Use estado remoto com bloqueio
+- Mantenha valores sensíveis no AWS Secrets Manager ou use AWS SSM Parameter Store
+- Use convenções de nomenclatura consistentes
+- Marque todos os recursos apropriadamente
+- Use permissões IAM mínimas
+- Implemente estratégias de backup e recuperação
+- Monitore custos e otimize recursos
+
+## Monitoramento e Observabilidade
+
+- Configure CloudWatch Alarms para métricas críticas
+- Implemente logging centralizado com grupos de logs do CloudWatch
+- Use o AWS X-Ray para rastreamento distribuído
+- Configure painéis de monitoramento para visualizar métricas importantes
+
+## Solução de Problemas
+
+### Problemas Comuns
+
+1. **Erro de timeout durante o apply**:
+   - Verifique suas configurações de rede e permissões IAM
+   - Aumente o timeout no provider configuration
+
+2. **Falha na criação de recursos**:
+   - Verifique os limites de serviço da sua conta AWS
+   - Confirme que as dependências estão sendo criadas na ordem correta
+
+3. **Problemas de estado do Terraform**:
+   - Use `terraform state list` para verificar o estado atual
+   - Se necessário, use `terraform state rm` para remover recursos problemáticos
+
+### Comandos Úteis
+
+```bash
+# Visualizar saídas
+terraform output
+
+# Destruir a infraestrutura
+terraform destroy
+
+# Formatar os arquivos de configuração
+terraform fmt -recursive
+
+# Validar a configuração
+terraform validate
+```
+
+## Contribuindo
+
+Por favor, siga a estrutura de código existente e as convenções de nomenclatura ao adicionar novos recursos ou módulos. Crie pull requests para todas as alterações e garanta que os testes passem antes de solicitar revisão.
+
+## Segurança
+
+- Rotacione as credenciais regularmente
+- Use roles IAM com privilégios mínimos
+- Implemente criptografia em trânsito e em repouso
+- Realize auditorias de segurança periodicamente 
