@@ -1,137 +1,170 @@
 import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { theme } from '../styles/theme';
-import Container from '../components/Layout/Container';
-import Button from '../components/Button/Button';
-import Card from '../components/Card/Card';
-
-const HeroSection = styled.div`
-  padding: ${theme.spacing.xxl} 0;
-  text-align: center;
-`;
-
-const HeroTitle = styled.h1`
-  font-size: ${theme.typography.fontSizes.xxxl};
-  font-weight: ${theme.typography.fontWeights.bold};
-  margin-bottom: ${theme.spacing.md};
-  color: ${theme.colors.text};
-`;
-
-const HeroSubtitle = styled.p`
-  font-size: ${theme.typography.fontSizes.large};
-  color: ${theme.colors.secondaryText};
-  max-width: 700px;
-  margin: 0 auto ${theme.spacing.xl};
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: ${theme.spacing.md};
-  justify-content: center;
-  margin-bottom: ${theme.spacing.xxl};
-`;
-
-const FeaturesSection = styled.div`
-  padding: ${theme.spacing.xxl} 0;
-  background-color: #f9f9f9;
-`;
-
-const FeatureTitle = styled.h2`
-  text-align: center;
-  margin-bottom: ${theme.spacing.xl};
-`;
-
-const FeaturesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${theme.spacing.lg};
-`;
-
-const FeatureCard = styled(Card)`
-  height: 100%;
-`;
-
-const FeatureIcon = styled.div`
-  width: 56px;
-  height: 56px;
-  border-radius: ${theme.borderRadius.round};
-  background-color: rgba(71, 162, 72, 0.1);
-  color: ${theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  margin-bottom: ${theme.spacing.md};
-`;
+import { useAuth0 } from '@auth0/auth0-react';
+import { 
+  Container, 
+  Typography, 
+  Grid, 
+  Box, 
+  Button, 
+  Paper,
+  Stack,
+  Divider
+} from '@mui/material';
+import { 
+  Security as SecurityIcon, 
+  AutoAwesome as FeatureIcon,
+  Code as CodeIcon
+} from '@mui/icons-material';
+import Card from '../components/UI/Card';
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
-  const handleGetStarted = () => {
-    navigate('/dashboard');
-  };
+  const features = [
+    {
+      title: 'React 18',
+      icon: <CodeIcon fontSize="large" color="primary" />,
+      description: 'Built with the latest React features including hooks, context, and concurrent mode.'
+    },
+    {
+      title: 'Material UI',
+      icon: <FeatureIcon fontSize="large" color="primary" />,
+      description: 'Beautiful, customizable, and accessible component library.'
+    },
+    {
+      title: 'Auth0 Integration',
+      icon: <SecurityIcon fontSize="large" color="primary" />,
+      description: 'Secure authentication and authorization out of the box.'
+    }
+  ];
 
   return (
-    <>
-      <Container>
-        <HeroSection>
-          <HeroTitle>Welcome to Hackathon Data Platform</HeroTitle>
-          <HeroSubtitle>
-            A modern, MongoDB-inspired platform for all your data management needs. 
-            Easily organize, visualize, and analyze your data with our intuitive tools.
-          </HeroSubtitle>
-          <ButtonGroup>
-            <Button variant="secondary" size="large" onClick={() => navigate('/about')}>
-              Learn More
-            </Button>
-            <Button size="large" onClick={handleGetStarted}>
-              Get Started
-            </Button>
-          </ButtonGroup>
-        </HeroSection>
-      </Container>
-
-      <FeaturesSection>
-        <Container>
-          <FeatureTitle>Key Features</FeatureTitle>
-          <FeaturesGrid>
-            <FeatureCard 
-              title="Intuitive Dashboard"
-              subtitle="Monitor all your key metrics in one place"
-            >
-              <FeatureIcon>📊</FeatureIcon>
-              <p>
-                Our dashboard provides a clean overview of your data with MongoDB-inspired
-                visualizations that make understanding your information easier than ever.
-              </p>
-            </FeatureCard>
-            
-            <FeatureCard 
-              title="Advanced Analytics"
-              subtitle="Deep insights into your data"
-            >
-              <FeatureIcon>📈</FeatureIcon>
-              <p>
-                Leverage our powerful analytics tools to discover patterns and trends, 
-                helping you make more informed decisions.
-              </p>
-            </FeatureCard>
-            
-            <FeatureCard 
-              title="Seamless Integration"
-              subtitle="Connect with your favorite tools"
-            >
-              <FeatureIcon>🔄</FeatureIcon>
-              <p>
-                Easily integrate with other systems and tools in your workflow, 
-                creating a unified data experience across your organization.
-              </p>
-            </FeatureCard>
-          </FeaturesGrid>
-        </Container>
-      </FeaturesSection>
-    </>
+    <Container maxWidth="lg">
+      {/* Hero Section */}
+      <Box 
+        sx={{ 
+          textAlign: 'center', 
+          py: 8,
+        }}
+      >
+        <Typography 
+          variant="h2" 
+          component="h1" 
+          gutterBottom
+          sx={{ fontWeight: 'bold', mb: 2 }}
+        >
+          Hackathon Infrastructure
+        </Typography>
+        
+        <Typography 
+          variant="h5" 
+          color="textSecondary" 
+          sx={{ mb: 4, maxWidth: '800px', mx: 'auto' }}
+        >
+          A modern React application with TypeScript, Material UI, and Auth0 integration.
+        </Typography>
+        
+        {!isAuthenticated && (
+          <Button 
+            variant="contained" 
+            size="large" 
+            color="primary" 
+            onClick={() => loginWithRedirect()}
+            sx={{ my: 2 }}
+          >
+            Get Started
+          </Button>
+        )}
+      </Box>
+      
+      <Divider sx={{ my: 4 }} />
+      
+      {/* Features Section */}
+      <Box sx={{ py: 4 }}>
+        <Typography 
+          variant="h4" 
+          component="h2" 
+          align="center" 
+          gutterBottom
+          sx={{ mb: 6 }}
+        >
+          Key Features
+        </Typography>
+        
+        <Grid container spacing={4}>
+          {features.map((feature, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Paper 
+                elevation={2}
+                sx={{ 
+                  p: 4, 
+                  height: '100%', 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  transition: 'transform 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)'
+                  }
+                }}
+              >
+                <Box sx={{ mb: 2 }}>
+                  {feature.icon}
+                </Box>
+                <Typography variant="h6" component="h3" gutterBottom>
+                  {feature.title}
+                </Typography>
+                <Typography variant="body1" color="textSecondary">
+                  {feature.description}
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      
+      <Divider sx={{ my: 4 }} />
+      
+      {/* Projects Section */}
+      <Box sx={{ py: 4 }}>
+        <Typography 
+          variant="h4" 
+          component="h2" 
+          align="center" 
+          gutterBottom
+          sx={{ mb: 6 }}
+        >
+          Sample Projects
+        </Typography>
+        
+        <Grid container spacing={4}>
+          {[1, 2, 3].map((item) => (
+            <Grid item xs={12} md={4} key={item}>
+              <Card
+                title={`Project ${item}`}
+                subheader="Sample Project"
+                image={`https://source.unsplash.com/random/300x200?sig=${item}`}
+                actions={
+                  <Stack direction="row" spacing={1}>
+                    <Button size="small" color="primary">
+                      View
+                    </Button>
+                    <Button size="small" color="secondary">
+                      Details
+                    </Button>
+                  </Stack>
+                }
+              >
+                <Typography variant="body2" color="text.secondary">
+                  This is a sample project card demonstrating the Material UI integration with our custom components.
+                </Typography>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
