@@ -94,8 +94,7 @@ jobs:
 
       - name: Copy assets to build directory
         run: |
-          mkdir -p build/assets
-          cp -r packages/frontend/public/assets/* build/assets/
+          cp -r packages/frontend/public/assets build/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
