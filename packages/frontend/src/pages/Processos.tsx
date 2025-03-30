@@ -51,7 +51,7 @@ const Processos: React.FC = () => {
       <Box sx={{ pt: 3, pb: 5 }}>
         {/* Header with title and add button */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h4" color="primary" gutterBottom sx={{ fontWeight: 'medium' }}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#333333', m: 0 }}>
             Processos
           </Typography>
           <Button
@@ -65,14 +65,14 @@ const Processos: React.FC = () => {
         </Box>
         
         {/* Search Section */}
-        <Paper sx={{ p: 3, mb: 4 }}>
-          <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'medium', mb: 3 }}>
+        <Paper sx={{ p: 3, mb: 4, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 3, color: '#333333' }}>
             Busca
           </Typography>
           
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" gutterBottom fontWeight="bold">
                 Número do Processo
               </Typography>
               <TextField
@@ -89,12 +89,11 @@ const Processos: React.FC = () => {
                   ),
                 }}
                 size="small"
-                sx={{ bgcolor: 'background.paper' }}
               />
             </Grid>
             
             <Grid item xs={12} md={8}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" gutterBottom fontWeight="bold">
                 Período
               </Typography>
               <Grid container spacing={2}>
@@ -104,7 +103,6 @@ const Processos: React.FC = () => {
                     placeholder="Inicio"
                     variant="outlined"
                     size="small"
-                    sx={{ bgcolor: 'background.paper' }}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -113,41 +111,38 @@ const Processos: React.FC = () => {
                     placeholder="Fim"
                     variant="outlined"
                     size="small"
-                    sx={{ bgcolor: 'background.paper' }}
                   />
                 </Grid>
               </Grid>
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" gutterBottom fontWeight="bold">
                 Polo Ativo
               </Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 size="small"
-                sx={{ bgcolor: 'background.paper' }}
               />
             </Grid>
             
             <Grid item xs={12} md={6}>
-              <Typography variant="body1" gutterBottom>
+              <Typography variant="body1" gutterBottom fontWeight="bold">
                 Polo Passivo
               </Typography>
               <TextField
                 fullWidth
                 variant="outlined"
                 size="small"
-                sx={{ bgcolor: 'background.paper' }}
               />
             </Grid>
           </Grid>
         </Paper>
         
         {/* Process List Section */}
-        <Paper sx={{ p: 3 }}>
-          <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'medium', mb: 3 }}>
+        <Paper sx={{ p: 3, boxShadow: 'none', border: '1px solid #e0e0e0' }}>
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mb: 3, color: '#333333' }}>
             Lista de Processos
           </Typography>
           
@@ -155,12 +150,12 @@ const Processos: React.FC = () => {
             <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Número do Processo</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Prazo Fatal</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Última Movimentação</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Polo Ativo</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Polo Passivo</TableCell>
-                  <TableCell sx={{ fontWeight: 'medium', color: 'primary.main' }}>Saneamento</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Número do Processo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Prazo Fatal</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Última Movimentação</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Polo Ativo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Polo Passivo</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Saneamento</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -175,7 +170,8 @@ const Processos: React.FC = () => {
                       '&:hover': {
                         cursor: 'pointer',
                         backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                      }
+                      },
+                      '&:last-child td, &:last-child th': { border: 0 }
                     }}
                   >
                     <TableCell component="th" scope="row">{row.id}</TableCell>

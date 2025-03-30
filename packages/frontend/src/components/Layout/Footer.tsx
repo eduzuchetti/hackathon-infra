@@ -25,11 +25,12 @@ const Footer: React.FC = () => {
     <Box 
       component="footer"
       sx={{
-        bgcolor: 'background.paper',
         py: 6,
         mt: 'auto',
         borderTop: 1,
-        borderColor: 'divider'
+        borderColor: 'divider',
+        width: '100%',
+        flexShrink: 0 // Prevents the footer from shrinking
       }}
     >
       <Container maxWidth="lg">

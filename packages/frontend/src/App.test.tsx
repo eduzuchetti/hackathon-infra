@@ -8,7 +8,6 @@ jest.mock('./auth/auth0-provider', () =>
 
 // Mock components that might cause issues in tests
 jest.mock('./pages/Home', () => () => <div data-testid="home-page">Home Page</div>);
-jest.mock('./pages/Dashboard', () => () => <div data-testid="dashboard-page">Dashboard Page</div>);
 jest.mock('./pages/Login', () => () => <div data-testid="login-page">Login Page</div>);
 jest.mock('./pages/About', () => () => <div data-testid="about-page">About Page</div>);
 jest.mock('./components/Layout/Navbar', () => () => <nav data-testid="navbar">Navbar</nav>);

@@ -72,7 +72,6 @@ const ProcessoDetalhes: React.FC = () => {
           component={RouterLink} 
           to="/processos" 
           sx={{ 
-            bgcolor: 'white', 
             boxShadow: 1,
             '&:hover': { bgcolor: 'white' } 
           }}
@@ -105,35 +104,35 @@ const ProcessoDetalhes: React.FC = () => {
       {/* Process details */}
       <Grid container spacing={2} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={2.4}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Prazo Final
           </Typography>
           <Paper variant="outlined" sx={{ p: 2, height: '56px', display: 'flex', alignItems: 'center' }} />
         </Grid>
         
         <Grid item xs={12} sm={6} md={2.4}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Ultima Movimentação
           </Typography>
           <Paper variant="outlined" sx={{ p: 2, height: '56px', display: 'flex', alignItems: 'center' }} />
         </Grid>
         
         <Grid item xs={12} sm={6} md={2.4}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Natureza
           </Typography>
           <Paper variant="outlined" sx={{ p: 2, height: '56px', display: 'flex', alignItems: 'center' }} />
         </Grid>
         
         <Grid item xs={12} sm={6} md={2.4}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Juízo
           </Typography>
           <Paper variant="outlined" sx={{ p: 2, height: '56px', display: 'flex', alignItems: 'center' }} />
         </Grid>
         
         <Grid item xs={12} sm={6} md={2.4}>
-          <Typography variant="body1" gutterBottom>
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Valor da Causa
           </Typography>
           <Paper variant="outlined" sx={{ p: 2, height: '56px', display: 'flex', alignItems: 'center' }} />
@@ -143,7 +142,7 @@ const ProcessoDetalhes: React.FC = () => {
       {/* Polo Ativo & Passivo */}
       <Grid container spacing={4} sx={{ mb: 4 }}>
         <Grid item xs={12} md={6}>
-          <Typography variant="body1" gutterBottom fontWeight="medium">
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Polo Ativo
           </Typography>
           <TextField
@@ -151,12 +150,11 @@ const ProcessoDetalhes: React.FC = () => {
             variant="outlined"
             size="small"
             placeholder="Outlined style"
-            sx={{ bgcolor: 'background.paper' }}
           />
         </Grid>
         
         <Grid item xs={12} md={6}>
-          <Typography variant="body1" gutterBottom fontWeight="medium">
+          <Typography variant="body1" gutterBottom fontWeight="bold">
             Polo Passivo
           </Typography>
           <TextField
@@ -164,25 +162,24 @@ const ProcessoDetalhes: React.FC = () => {
             variant="outlined"
             size="small"
             placeholder="Outlined style"
-            sx={{ bgcolor: 'background.paper' }}
           />
         </Grid>
       </Grid>
 
       {/* Documents table */}
-      <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
+      <TableContainer component={Paper} variant="outlined" sx={{ mb: 3, boxShadow: 'none' }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
-            <TableRow sx={{ bgcolor: 'background.paper' }}>
-              <TableCell sx={{ color: theme => theme.palette.primary.main, fontWeight: 500 }}>Data de Atualização</TableCell>
-              <TableCell sx={{ color: theme => theme.palette.primary.main, fontWeight: 500 }}>Status</TableCell>
-              <TableCell sx={{ color: theme => theme.palette.primary.main, fontWeight: 500 }}>Arquivo do Processo</TableCell>
-              <TableCell sx={{ color: theme => theme.palette.primary.main, fontWeight: 500 }}>Observação</TableCell>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Data da Atualização</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Status</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Arquivo do Processo</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', color: '#47A248' }}>Observação</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {mockDocuments.map((row, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell>{row.data}</TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>{row.arquivo}</TableCell>
@@ -196,7 +193,7 @@ const ProcessoDetalhes: React.FC = () => {
       {/* Pagination */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
         <Typography variant="body2" sx={{ mr: 2 }}>
-          Rows per page:
+          Linhas por página:
         </Typography>
         <FormControl variant="standard" sx={{ minWidth: 60, mr: 2 }}>
           <Select
@@ -210,7 +207,7 @@ const ProcessoDetalhes: React.FC = () => {
           </Select>
         </FormControl>
         <Typography variant="body2" sx={{ mr: 2 }}>
-          1-5 of 10
+          1-5 de 10
         </Typography>
         <IconButton size="small" disabled={page === 0}>
           <NavigateBefore />

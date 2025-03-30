@@ -2,14 +2,14 @@ import { createTheme } from '@mui/material/styles';
 
 // Colors
 const colors = {
-  primary: '#47A248',
+  primary: '#1B5E20',
   primaryLight: '#589636',
   primaryDark: '#2E6A2E',
   secondary: '#2F5AA8',
   secondaryLight: '#4A7BD8',
   secondaryDark: '#1D3C72',
   background: '#FFFFFF',
-  surface: '#F5F5F5',
+  surface: '#FFFFFF',
   error: '#B00020',
   text: '#333333',
   textLight: '#666666',
@@ -86,7 +86,7 @@ export const muiTheme = createTheme({
     },
     background: {
       default: colors.background,
-      paper: colors.surface,
+      paper: '#FFFFFF',
     },
     text: {
       primary: colors.text,
@@ -210,6 +210,7 @@ export const muiTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: theme.borderRadius.md,
+          backgroundColor: 'transparent',
         },
       },
     },

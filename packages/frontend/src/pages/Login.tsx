@@ -54,7 +54,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
@@ -62,7 +62,7 @@ const Login = () => {
     <LoginContainer>
       <LoginCard>
         <Title>Welcome to Hackathon App</Title>
-        <Subtitle>Sign in to access your dashboard and manage your hackathons</Subtitle>
+        <Subtitle>Sign in to access your account and manage your processes</Subtitle>
         <LoginButton onClick={() => login()}>
           Sign In with Auth0
         </LoginButton>
