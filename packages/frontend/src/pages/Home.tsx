@@ -3,7 +3,6 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { 
   Container, 
   Typography, 
-  Grid, 
   Box, 
   Button, 
   Paper,
@@ -15,6 +14,7 @@ import {
   AutoAwesome as FeatureIcon,
   Code as CodeIcon
 } from '@mui/icons-material';
+import Grid from '../components/UI/Grid';
 import Card from '../components/UI/Card';
 
 const Home: React.FC = () => {

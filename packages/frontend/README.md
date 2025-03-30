@@ -6,6 +6,7 @@ This is the frontend of our hackathon infrastructure application. It's built wit
 - TypeScript 5.4.5+ (Latest)
 - Webpack 5
 - React Router
+- Material UI
 - Styled Components
 - Auth0 Authentication
 
@@ -144,6 +145,25 @@ npm run test:ci
 
 The CI pipeline runs tests as a separate job before building and deploying. Tests must pass before the build step begins.
 
+## Testing Error Pages
+
+The application includes custom 403 (Forbidden) and 404 (Not Found) error pages to improve user experience. To test these pages locally:
+
+```bash
+npm run test-error-pages
+```
+
+This will start a test server on port 3030 that allows you to view and test both error pages:
+- http://localhost:3030/403 - Forbidden error page
+- http://localhost:3030/404 - Not Found error page
+
+The error pages are designed to be:
+1. Standalone HTML files that don't require JavaScript to function
+2. Compatible with CloudFront error page configuration
+3. Styled consistently with the application's design system
+
+These error pages are automatically included in the build output when you run `npm run build`.
+
 ## CloudFront Deployment
 
 This application is designed to be deployed to AWS CloudFront as a static website. The Auth0 configuration is stored in a static file (`src/config/auth0-config.ts`) rather than using environment variables, as CloudFront only serves static files.
@@ -167,6 +187,35 @@ Each script will:
 3. The built files will be in the `build` directory, ready for deployment to S3/CloudFront
 
 **Note:** Since the Auth0 configuration is baked into the build, you need a separate build for each environment.
+
+## CloudFront Error Page Configuration
+
+To configure CloudFront to serve custom error pages:
+
+1. Go to the AWS CloudFront console and select your distribution
+2. Navigate to the "Error Pages" tab
+3. Click "Create custom error response"
+4. Configure each error type:
+
+   For 403 errors:
+   - HTTP Error Code: 403
+   - Error Caching Minimum TTL: 60 seconds
+   - Customize Error Response: Yes
+   - Response Page Path: `/403.html`
+   - HTTP Response Code: 403
+
+   For 404 errors:
+   - HTTP Error Code: 404
+   - Error Caching Minimum TTL: 60 seconds
+   - Customize Error Response: Yes
+   - Response Page Path: `/404.html`
+   - HTTP Response Code: 404
+
+5. For 403 access denied errors, ensure your bucket policy and CloudFront origin access identity are properly configured
+6. Deploy the application with the `npm run build` command to include the error pages in the build output
+7. After updating the CloudFront configuration, wait for the distribution to deploy (Status: Deployed)
+
+These settings ensure that users will see the custom error pages whenever they encounter access denied (403) or page not found (404) errors.
 
 ## Custom Webpack Setup
 
@@ -205,4 +254,47 @@ src/
 
 ## Contributing
 
-Please follow the established code style when contributing to this project. Make sure all tests pass before submitting a pull request. 
+Please follow the established code style when contributing to this project. Make sure all tests pass before submitting a pull request.
+
+## Material UI Implementation
+
+This project uses Material UI for its component library, providing a consistent and polished user interface. The implementation includes:
+
+### Theme Configuration
+
+- A shared color system between Material UI and styled-components
+- Custom MUI theme with overridden components
+- Responsive design breakpoints matching MUI's system
+
+### Component Structure
+
+The UI components are organized in the following way:
+
+- `/components/UI`: Core UI components that wrap and extend Material UI
+- `/components/Layout`: Layout components like Navbar, Footer, etc.
+- `/pages`: Page-level components that use the UI components
+
+### Using Material UI with Styled Components
+
+The project demonstrates two approaches to styling:
+
+1. **Direct MUI usage**: Using MUI components with the `sx` prop
+   ```jsx
+   <Box sx={{ p: 2, display: 'flex' }}>Content</Box>
+   ```
+
+2. **Extending with styled-components**: For more customized components
+   ```jsx
+   const StyledButton = styled(Button)`
+     text-transform: none;
+     box-shadow: ${({ theme }) => theme.shadows.sm};
+   `;
+   ```
+
+### Available Components
+
+The project includes customized versions of commonly used Material UI components:
+
+- `Button`: Extended MUI Button with consistent styling
+- `Card`: Configurable card component with title, image, and action support
+- `Layout components`: AppBar, Drawer, and responsive navigation 

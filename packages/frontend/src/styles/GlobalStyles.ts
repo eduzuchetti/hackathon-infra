@@ -10,9 +10,9 @@ export const GlobalStyles = createGlobalStyle`
 
   html, body {
     height: 100%;
-    font-family: ${theme.typography.fontFamily};
-    font-size: ${theme.typography.fontSizes.base};
-    line-height: ${theme.typography.lineHeights.normal};
+    font-family: ${theme.fonts.body};
+    font-size: ${theme.fontSizes.md};
+    line-height: 1.5;
     color: ${theme.colors.text};
     background-color: ${theme.colors.background};
     -webkit-font-smoothing: antialiased;
@@ -28,7 +28,7 @@ export const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
     color: ${theme.colors.primary};
-    transition: color ${theme.transitions.fast};
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       color: ${theme.colors.primaryLight};
@@ -37,37 +37,59 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
-    font-family: ${theme.typography.fontFamily};
+    font-family: ${theme.fonts.body};
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: ${theme.typography.fontWeights.bold};
-    line-height: ${theme.typography.lineHeights.tight};
-    margin-bottom: ${theme.spacing.md};
+    font-family: ${theme.fonts.heading};
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: ${theme.space.md};
+    color: ${theme.colors.text};
   }
 
   h1 {
-    font-size: ${theme.typography.fontSizes.xxxl};
+    font-size: ${theme.fontSizes['5xl']};
   }
 
   h2 {
-    font-size: ${theme.typography.fontSizes.xxl};
+    font-size: ${theme.fontSizes['4xl']};
   }
 
   h3 {
-    font-size: ${theme.typography.fontSizes.xl};
+    font-size: ${theme.fontSizes['3xl']};
   }
 
   h4 {
-    font-size: ${theme.typography.fontSizes.large};
+    font-size: ${theme.fontSizes['2xl']};
+  }
+
+  h5 {
+    font-size: ${theme.fontSizes.xl};
+  }
+
+  h6 {
+    font-size: ${theme.fontSizes.lg};
   }
 
   p {
-    margin-bottom: ${theme.spacing.md};
+    margin-bottom: ${theme.space.md};
   }
 
   input, select, textarea {
-    font-family: ${theme.typography.fontFamily};
-    font-size: ${theme.typography.fontSizes.base};
+    font-family: ${theme.fonts.body};
+    font-size: ${theme.fontSizes.md};
+  }
+
+  code, pre, kbd, samp {
+    font-family: ${theme.fonts.monospace};
+    font-size: ${theme.fontSizes.sm};
+  }
+
+  main {
+    flex: 1;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 `; 

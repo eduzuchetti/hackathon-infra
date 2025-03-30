@@ -1,105 +1,82 @@
 import React from 'react';
-import styled from 'styled-components';
-import { theme } from '../styles/theme';
-import Container from '../components/Layout/Container';
-import Card from '../components/Card/Card';
-import Button from '../components/Button/Button';
-
-const PageTitle = styled.h1`
-  margin: ${theme.spacing.lg} 0;
-  color: ${theme.colors.text};
-`;
-
-const Subtitle = styled.h2`
-  color: ${theme.colors.secondaryText};
-  font-weight: ${theme.typography.fontWeights.medium};
-  margin-bottom: ${theme.spacing.lg};
-`;
-
-const TeamSection = styled.div`
-  margin: ${theme.spacing.xl} 0;
-`;
-
-const TeamGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: ${theme.spacing.lg};
-`;
-
-const TeamMemberCard = styled(Card)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-`;
-
-const Avatar = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: ${theme.borderRadius.round};
-  object-fit: cover;
-  margin-bottom: ${theme.spacing.md};
-`;
-
-const Name = styled.h3`
-  margin-bottom: ${theme.spacing.xs};
-`;
-
-const Role = styled.p`
-  color: ${theme.colors.secondaryText};
-  margin-bottom: ${theme.spacing.md};
-`;
-
-const ContactSection = styled.div`
-  margin-top: ${theme.spacing.xxl};
-  text-align: center;
-`;
+import { 
+  Container, 
+  Box, 
+  Typography, 
+  Divider, 
+  Paper
+} from '@mui/material';
+import Grid from '../components/UI/Grid';
 
 const About: React.FC = () => {
+  const typographyVariants = [
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'subtitle1', 'subtitle2',
+    'body1', 'body2',
+    'button', 'caption', 'overline'
+  ] as const;
+
   return (
-    <Container>
-      <PageTitle>About Us</PageTitle>
-      <Subtitle>We're building the future of data management</Subtitle>
-      
-      <Card elevation="medium">
-        <p>
-          Our app helps you organize, visualize, and analyze your data with MongoDB-inspired
-          interfaces that are both powerful and easy to use.
-        </p>
-        <p>
-          Founded in 2023, we're on a mission to democratize data access and make powerful
-          tools available to everyone.
-        </p>
-      </Card>
-      
-      <TeamSection>
-        <h2>Our Team</h2>
-        <TeamGrid>
-          <TeamMemberCard elevation="small">
-            <Avatar src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team member" />
-            <Name>John Smith</Name>
-            <Role>Founder & CEO</Role>
-          </TeamMemberCard>
-          
-          <TeamMemberCard elevation="small">
-            <Avatar src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team member" />
-            <Name>Sarah Johnson</Name>
-            <Role>Lead Developer</Role>
-          </TeamMemberCard>
-          
-          <TeamMemberCard elevation="small">
-            <Avatar src="https://randomuser.me/api/portraits/men/68.jpg" alt="Team member" />
-            <Name>Mike Thompson</Name>
-            <Role>UX Designer</Role>
-          </TeamMemberCard>
-        </TeamGrid>
-      </TeamSection>
-      
-      <ContactSection>
-        <h2>Get in Touch</h2>
-        <p>Have questions or want to learn more about our services?</p>
-        <Button size="large">Contact Us</Button>
-      </ContactSection>
+    <Container maxWidth="lg">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h2" component="h1" gutterBottom>
+          About This Project
+        </Typography>
+        
+        <Typography variant="body1" paragraph>
+          This is a modern React application built with TypeScript, Material UI, and Auth0 integration.
+          It serves as a foundation for hackathon projects and demonstrates best practices for frontend development.
+        </Typography>
+
+        <Typography variant="body1" paragraph>
+          The application includes features like authentication, responsive design, and a customizable theme system
+          that combines the power of Material UI with the flexibility of styled-components.
+        </Typography>
+        
+        <Divider sx={{ my: 4 }} />
+        
+        <Typography variant="h3" gutterBottom>
+          Typography Showcase
+        </Typography>
+        
+        <Typography variant="body1" paragraph>
+          Below are examples of all available typography variants provided by Material UI, customized
+          for this application's design system.
+        </Typography>
+        
+        <Grid container spacing={3}>
+          {typographyVariants.map((variant) => (
+            <Grid item xs={12} md={6} key={variant}>
+              <Paper sx={{ p: 3, height: '100%' }}>
+                <Typography variant={variant} component="div" gutterBottom>
+                  {variant}: The quick brown fox jumps over the lazy dog
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Font family: {variant.includes('h') ? 'heading' : 'body'}
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+        
+        <Divider sx={{ my: 4 }} />
+        
+        <Typography variant="h3" gutterBottom>
+          Color Variations
+        </Typography>
+        
+        <Grid container spacing={3}>
+          {['primary', 'secondary', 'error', 'warning', 'info', 'success', 'text.primary', 'text.secondary'].map((color) => (
+            <Grid item xs={12} md={6} key={color}>
+              <Paper sx={{ p: 3, height: '100%' }}>
+                <Typography variant="body1" color={color} gutterBottom>
+                  {color}: The quick brown fox jumps over the lazy dog
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Container>
   );
 };

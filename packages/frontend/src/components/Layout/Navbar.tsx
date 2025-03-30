@@ -1,86 +1,243 @@
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { useAuth } from '../../auth/use-auth';
+import React, { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Box,
+  Link,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
+import {
+  Menu as MenuIcon,
+  Home as HomeIcon,
+  Dashboard as DashboardIcon,
+  Info as InfoIcon,
+  Login as LoginIcon,
+  Logout as LogoutIcon,
+  Person as PersonIcon,
+  TextFields as TextFieldsIcon
+} from '@mui/icons-material';
 
-type NavbarProps = {
+interface NavbarProps {
   title: string;
-};
+}
 
-const NavContainer = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.light};
-`;
-
-const NavBrand = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
-`;
-
-const NavLinks = styled.div`
-  display: flex;
-  gap: 1.5rem;
-`;
-
-const NavLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.light};
-  text-decoration: none;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const AuthButton = styled.button`
-  background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.colors.light};
-  color: ${({ theme }) => theme.colors.light};
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.light};
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-const Navbar = ({ title }: NavbarProps) => {
-  const { isAuthenticated, login, logout, isLoading } = useAuth();
+const Navbar: React.FC<NavbarProps> = ({ title }) => {
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+  
+  const handleLogout = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } });
+    handleMenuClose();
+  };
+  
+  const menuItems = [
+    { text: 'Profile', icon: <PersonIcon />, onClick: () => navigate('/profile') },
+    { text: 'Logout', icon: <LogoutIcon />, onClick: handleLogout }
+  ];
+  
+  const navItems = [
+    { text: 'Home', path: '/', icon: <HomeIcon /> },
+    { text: 'Dashboard', path: '/dashboard', icon: <DashboardIcon />, requireAuth: true },
+    { text: 'Typography', path: '/typography', icon: <TextFieldsIcon /> },
+    { text: 'About', path: '/about', icon: <InfoIcon /> }
+  ];
+  
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        {title}
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          (!item.requireAuth || isAuthenticated) && (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton 
+                component={RouterLink} 
+                to={item.path}
+                sx={{ textAlign: 'center' }}
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          )
+        ))}
+        {!isAuthenticated ? (
+          <ListItem disablePadding>
+            <ListItemButton 
+              onClick={() => loginWithRedirect()}
+              sx={{ textAlign: 'center' }}
+            >
+              <ListItemIcon><LoginIcon /></ListItemIcon>
+              <ListItemText primary="Login" />
+            </ListItemButton>
+          </ListItem>
+        ) : (
+          <ListItem disablePadding>
+            <ListItemButton 
+              onClick={handleLogout}
+              sx={{ textAlign: 'center' }}
+            >
+              <ListItemIcon><LogoutIcon /></ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItemButton>
+          </ListItem>
+        )}
+      </List>
+    </Box>
+  );
 
   return (
-    <NavContainer>
-      <NavBrand>
-        <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-          {title}
-        </Link>
-      </NavBrand>
+    <>
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            <Link 
+              component={RouterLink} 
+              to="/" 
+              color="inherit" 
+              underline="none"
+            >
+              {title}
+            </Link>
+          </Typography>
+          
+          {!isMobile && (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {navItems.map((item) => (
+                (!item.requireAuth || isAuthenticated) && (
+                  <Button 
+                    key={item.text}
+                    color="inherit"
+                    component={RouterLink}
+                    to={item.path}
+                    startIcon={item.icon}
+                    sx={{ ml: 2 }}
+                  >
+                    {item.text}
+                  </Button>
+                )
+              ))}
+              
+              {!isAuthenticated ? (
+                <Button 
+                  color="inherit"
+                  onClick={() => loginWithRedirect()}
+                  startIcon={<LoginIcon />}
+                  sx={{ ml: 2 }}
+                >
+                  Login
+                </Button>
+              ) : (
+                <>
+                  <IconButton
+                    color="inherit"
+                    onClick={handleMenuOpen}
+                    sx={{ ml: 2 }}
+                  >
+                    <PersonIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                  >
+                    <MenuItem disabled>
+                      <Typography variant="body2">
+                        {user?.name || user?.email}
+                      </Typography>
+                    </MenuItem>
+                    <Divider />
+                    {menuItems.map((item) => (
+                      <MenuItem key={item.text} onClick={item.onClick}>
+                        <ListItemIcon>
+                          {item.icon}
+                        </ListItemIcon>
+                        <ListItemText>
+                          {item.text}
+                        </ListItemText>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )}
+            </Box>
+          )}
+        </Toolbar>
+      </AppBar>
       
-      <NavLinks>
-        <NavLink to="/">Home</NavLink>
-        {isAuthenticated && (
-          <NavLink to="/dashboard">Dashboard</NavLink>
-        )}
-        <NavLink to="/about">About</NavLink>
-        
-        {!isLoading && (
-          isAuthenticated ? (
-            <AuthButton onClick={() => logout()}>
-              Sign Out
-            </AuthButton>
-          ) : (
-            <AuthButton onClick={() => login()}>
-              Sign In
-            </AuthButton>
-          )
-        )}
-      </NavLinks>
-    </NavContainer>
+      <Drawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better mobile performance
+        }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+        }}
+      >
+        {drawer}
+      </Drawer>
+    </>
   );
 };
 

@@ -7,6 +7,10 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
+    "@mui/icons-material": "7.0.1",
+    "@mui/material": "7.0.1",
     "@testing-library/jest-dom": "^6.2.0",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.2",
@@ -37,7 +41,8 @@
     "dev:watch": "nodemon --watch src --watch webpack.config.js --ext js,jsx,ts,tsx,json,css --exec \"webpack serve --mode development\"",
     "auth0:dev": "node scripts/update-auth0-config.js dev",
     "auth0:staging": "node scripts/update-auth0-config.js staging",
-    "auth0:prod": "node scripts/update-auth0-config.js prod"
+    "auth0:prod": "node scripts/update-auth0-config.js prod",
+    "test-error-pages": "node scripts/test-error-pages.js"
   },
   "eslintConfig": {
     "extends": [
@@ -84,4 +89,4 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   }
-} 
+}
