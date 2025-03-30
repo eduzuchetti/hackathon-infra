@@ -85,6 +85,21 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
+  custom_error_response {
+    error_code         = 403
+    response_code      = 200
+    response_page_path = "/403"
+  }
+
+  custom_error_response {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/404"
+  }
+  
+  
+  
+
   price_class = "PriceClass_100"
 
   restrictions {
