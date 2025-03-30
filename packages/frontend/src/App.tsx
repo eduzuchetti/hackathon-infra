@@ -16,6 +16,8 @@ import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import TypographyDemo from './pages/TypographyDemo';
 import Painel from './pages/Painel';
+import Processos from './pages/Processos';
+import ProcessoDetalhes from './pages/ProcessoDetalhes';
 import { Box } from '@mui/material';
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
                     } 
                   />
                   <Route path="/painel" element={<Painel />} />
+                  <Route path="/processos" element={<Processos />} />
+                  <Route path="/processos/:id" element={<ProcessoDetalhes />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/typography" element={<TypographyDemo />} />
                   <Route path="/403" element={<Error403 />} />
