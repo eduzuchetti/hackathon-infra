@@ -48,7 +48,7 @@ const LoginButton = styled.button`
   }
 `;
 
-export const Login = () => {
+const Login = () => {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -69,4 +69,6 @@ export const Login = () => {
       </LoginCard>
     </LoginContainer>
   );
-}; 
+};
+
+export default Login; 

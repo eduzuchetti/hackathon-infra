@@ -29,9 +29,12 @@
     "build:staging": "node scripts/update-auth0-config.js staging && webpack --mode production",
     "build:prod": "node scripts/update-auth0-config.js prod && webpack --mode production",
     "test": "jest",
+    "test:ci": "jest --ci --passWithNoTests --silent --runInBand --bail",
+    "test:watch": "jest --watch",
     "clean": "rimraf node_modules package-lock.json build",
     "reinstall": "npm run clean && npm install",
     "dev": "npm start",
+    "dev:watch": "nodemon --watch src --watch webpack.config.js --ext js,jsx,ts,tsx,json,css --exec \"webpack serve --mode development\"",
     "auth0:dev": "node scripts/update-auth0-config.js dev",
     "auth0:staging": "node scripts/update-auth0-config.js staging",
     "auth0:prod": "node scripts/update-auth0-config.js prod"

@@ -9,14 +9,16 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js'
+    '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js',
+    'styled-components': '<rootDir>/src/__mocks__/styleMock.js'
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
     '!src/index.tsx',
-    '!src/serviceWorker.ts'
+    '!src/serviceWorker.ts',
+    '!src/__mocks__/**'
   ],
   coverageThreshold: {
     global: {
@@ -25,5 +27,8 @@ module.exports = {
       lines: 70,
       statements: 70
     }
-  }
+  },
+  testPathIgnorePatterns: [
+    '/node_modules/'
+  ]
 }; 

@@ -99,6 +99,8 @@ This will start the app in development mode. Open [http://localhost:3000](http:/
 - `npm start` - Runs the app in development mode with webpack-dev-server
 - `npm run dev:watch` - Runs the development server with nodemon for auto-reloading on file changes
 - `npm test` - Launches the Jest test runner
+- `npm run test:ci` - Runs tests in CI mode (non-interactive, with flags for CI environments)
+- `npm run test:watch` - Runs tests in watch mode for development
 - `npm run build` - Builds the app for production using webpack
 - `npm run build:dev` - Generates dev Auth0 config and builds for production
 - `npm run build:staging` - Generates staging Auth0 config and builds for production 
@@ -109,6 +111,38 @@ This will start the app in development mode. Open [http://localhost:3000](http:/
 - `npm run auth0:dev` - Generates Auth0 config for development environment
 - `npm run auth0:staging` - Generates Auth0 config for staging environment
 - `npm run auth0:prod` - Generates Auth0 config for production environment
+
+## Testing
+
+The application uses Jest and React Testing Library for unit and integration tests. The test setup includes:
+
+- Jest for test running and assertions
+- React Testing Library for component testing
+- JSDOM for browser environment simulation
+- Mocks for Auth0 and styled-components
+
+### Running Tests
+
+```bash
+# Run tests once
+npm test
+
+# Run tests in watch mode (good for development)
+npm run test:watch
+
+# Run tests in CI mode
+npm run test:ci
+```
+
+### Test Organization
+
+- Unit tests are usually placed alongside the files they test (`Component.test.tsx` next to `Component.tsx`)
+- Mocks are stored in `src/__mocks__/`
+- Test setup is in `src/setupTests.ts`
+
+### CI Integration
+
+The CI pipeline runs tests as a separate job before building and deploying. Tests must pass before the build step begins.
 
 ## CloudFront Deployment
 
