@@ -23,16 +23,6 @@ output "ecs_policy_arn" {
   value       = aws_iam_policy.ecs_permissions.arn
 }
 
-output "s3_policy_arn" {
-  description = "ARN of the S3 policy for frontend deployment"
-  value       = aws_iam_policy.s3_permissions.arn
-}
-
-output "cloudfront_policy_arn" {
-  description = "ARN of the CloudFront policy for frontend deployment"
-  value       = aws_iam_policy.cloudfront_permissions.arn
-}
-
 output "admin_role_arn" {
   description = "ARN of the admin IAM role for GitHub Actions"
   value       = aws_iam_role.github_actions_admin.arn

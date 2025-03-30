@@ -134,55 +134,6 @@ resource "aws_iam_policy" "ecs_permissions" {
   tags = var.tags
 }
 
-# Create policy for S3 operations for frontend deployment
-resource "aws_iam_policy" "s3_permissions" {
-  name        = "${var.role_name}-s3-policy"
-  description = "Permissions for GitHub Actions to deploy to S3"
-  
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:ListBucket",
-          "s3:DeleteObject"
-        ],
-        Resource = [
-          var.frontend_s3_bucket_arn,
-          "${var.frontend_s3_bucket_arn}/*"
-        ]
-      }
-    ]
-  })
-  
-  tags = var.tags
-}
-
-# Create policy for CloudFront invalidation
-resource "aws_iam_policy" "cloudfront_permissions" {
-  name        = "${var.role_name}-cloudfront-policy"
-  description = "Permissions for GitHub Actions to create CloudFront invalidations"
-  
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation",
-          "cloudfront:ListInvalidations"
-        ],
-        Resource = var.frontend_cloudfront_distribution_arn
-      }
-    ]
-  })
-  
-  tags = var.tags
-}
 
 # Attach ECR permissions policy to the role
 resource "aws_iam_role_policy_attachment" "ecr_permissions" {
@@ -194,18 +145,6 @@ resource "aws_iam_role_policy_attachment" "ecr_permissions" {
 resource "aws_iam_role_policy_attachment" "ecs_permissions" {
   role       = aws_iam_role.github_actions.name
   policy_arn = aws_iam_policy.ecs_permissions.arn
-}
-
-# Attach S3 permissions policy to the role
-resource "aws_iam_role_policy_attachment" "s3_permissions" {
-  role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.s3_permissions.arn
-}
-
-# Attach CloudFront permissions policy to the role
-resource "aws_iam_role_policy_attachment" "cloudfront_permissions" {
-  role       = aws_iam_role.github_actions.name
-  policy_arn = aws_iam_policy.cloudfront_permissions.arn
 }
 
 # Attach AWS PowerUserAccess policy to the admin role
