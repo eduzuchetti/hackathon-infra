@@ -22,16 +22,24 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = "prod"
-      Project     = "hackathon"
-      ManagedBy   = "terraform"
+      Environment = terraform.workspace
+      Project     = "Hackathon Biofy"
+      ManagedBy   = "Terraform"
+      Repository  = "eduzuchetti/hackathon-infra"
     }
+  }
+}
+
+locals {
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
   }
 }
 
 # Custom VPC for the infrastructure
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "./modules/vpc"
   name   = "${var.project_name}-${var.environment}"
   
   vpc_cidr           = var.vpc_cidr
@@ -46,7 +54,7 @@ module "vpc" {
 
 # ECR Repository for docker images
 module "ecr" {
-  source = "../../modules/ecr"
+  source = "./modules/ecr"
   
   repository_name = "${var.project_name}-app"
   
@@ -92,7 +100,7 @@ module "ecr" {
 
 # S3 bucket for application assets
 module "app_storage" {
-  source      = "../../modules/s3"
+  source      = "./modules/s3"
   bucket_name = "${var.project_name}-${var.environment}-raw-data"
 
   versioning_enabled = true
@@ -129,7 +137,7 @@ module "app_storage" {
 
 # RDS MySQL Database
 module "database" {
-  source       = "../../modules/rds"
+  source       = "./modules/rds"
   name         = "${var.project_name}-db-${var.environment}"
   vpc_id       = module.vpc.vpc_id
   subnet_ids   = module.vpc.public_subnet_ids  # Using public subnets for public access
@@ -172,7 +180,7 @@ resource "aws_ssm_parameter" "db_password" {
 
 # Application Load Balancer for ECS service
 module "app_alb" {
-  source = "../../modules/alb"
+  source = "./modules/alb"
   
   name       = "${var.project_name}-${var.environment}"
   vpc_id     = module.vpc.vpc_id
@@ -198,7 +206,7 @@ module "app_alb" {
 
 # ECS Cluster and Service
 module "app_cluster" {
-  source        = "../../modules/ecs"
+  source        = "./modules/ecs"
   cluster_name  = "${var.project_name}-${var.environment}-cluster"
   service_name  = "${var.project_name}-${var.environment}-service-JustAPI"
   
@@ -308,7 +316,7 @@ module "app_cluster" {
 
 # OpenSearch Service
 module "opensearch" {
-  source = "../../modules/opensearch"
+  source = "./modules/opensearch"
   
   domain_name = "${var.project_name}-search-${var.environment}"
   
@@ -335,16 +343,33 @@ module "opensearch" {
 }
 
 module "github_oidc" {
-  source = "../../modules/github-oidc"
+  source = "./modules/github-oidc"
 
-  github_org                 = "eliezerfrocha"
-  # ecr_repository_arn         = module.ecr.repository_arn
+  role_name          = "github-actions-role"
+  github_org         = var.github_org
+  github_repo        = var.github_repo
+  
+  # ECS Deployment config
   ecs_cluster_arn            = module.app_cluster.cluster_arn
   ecs_task_execution_role_arn = module.app_cluster.task_execution_role_arn
   ecs_task_role_arn          = module.app_cluster.task_role_arn
   
-  tags = {
-    Environment = var.environment
-    Project     = var.project_name
-  }
+  # Frontend deployment config
+  frontend_s3_bucket_arn              = module.frontend.s3_bucket_arn
+  frontend_cloudfront_distribution_arn = module.frontend.cloudfront_distribution_id
+  
+  # Admin role for eduzuchetti org
+  admin_role_name   = "github-actions-role-admin"
+  admin_github_org  = "eduzuchetti"
+  admin_github_repo = "*"
+  
+  tags = local.tags
+}
+
+# Frontend S3 and CloudFront
+module "frontend" {
+  source = "./modules/frontend"
+
+  bucket_name = "${var.project_name}-frontend-${var.environment}"
+  tags        = local.tags
 } 

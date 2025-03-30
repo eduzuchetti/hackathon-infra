@@ -77,4 +77,15 @@ variable "app_version" {
   description = "Version tag of the container image to deploy"
   type        = string
   default     = "latest"
+}
+
+# GitHub Configuration
+variable "github_org" {
+  description = "GitHub organization name"
+  type        = string
+}
+
+variable "github_repo" {
+  description = "GitHub repository name"
+  type        = string
 } 

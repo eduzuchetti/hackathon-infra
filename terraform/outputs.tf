@@ -103,6 +103,16 @@ output "github_actions_role_name" {
   value       = module.github_oidc.role_name
 }
 
+output "github_actions_admin_role_arn" {
+  description = "ARN of the admin IAM role for GitHub Actions (eduzuchetti org)"
+  value       = module.github_oidc.admin_role_arn
+}
+
+output "github_actions_admin_role_name" {
+  description = "Name of the admin IAM role for GitHub Actions (eduzuchetti org)"
+  value       = module.github_oidc.admin_role_name
+}
+
 output "alb_dns_name" {
   description = "DNS name of the Application Load Balancer"
   value       = module.app_alb.alb_dns_name
@@ -111,4 +121,25 @@ output "alb_dns_name" {
 output "alb_zone_id" {
   description = "Zone ID of the Application Load Balancer"
   value       = module.app_alb.alb_zone_id
+}
+
+# Frontend outputs
+output "frontend_s3_bucket" {
+  description = "Name of the S3 bucket for frontend hosting"
+  value       = module.frontend.s3_bucket_id
+}
+
+output "frontend_cloudfront_distribution" {
+  description = "Domain name of the CloudFront distribution"
+  value       = module.frontend.cloudfront_distribution_domain_name
+}
+
+output "frontend_cloudfront_distribution_id" {
+  description = "ID of the CloudFront distribution"
+  value       = module.frontend.cloudfront_distribution_id
+}
+
+output "frontend_deploy_role_arn" {
+  description = "ARN of the IAM role for frontend deployment"
+  value       = module.github_oidc.role_arn
 } 
