@@ -372,4 +372,28 @@ module "frontend" {
 
   bucket_name = "${var.project_name}-frontend-${var.environment}"
   tags        = local.tags
+}
+
+# ElastiCache Redis
+module "elasticache" {
+  source = "./modules/elasticache"
+  
+  name              = "${var.project_name}-redis-${var.environment}"
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = module.vpc.public_subnet_ids  # Usando subnets públicas para acesso público
+  
+  instance_type     = var.elasticache_instance_type
+  num_cache_clusters = var.elasticache_num_cache_clusters
+  auth_token        = var.elasticache_auth_token
+  
+  # Configurar acesso a partir do ECS/ALB
+  security_group_ids = [module.app_cluster.security_group_id, module.app_alb.security_group_id]
+  
+  # Permitir Multi-AZ para alta disponibilidade
+  multi_az_enabled  = true
+  
+  tags = {
+    Name        = "${var.project_name}-redis-${var.environment}"
+    Environment = var.environment
+  }
 } 

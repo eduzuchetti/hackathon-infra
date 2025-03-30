@@ -142,4 +142,37 @@ output "frontend_cloudfront_distribution_id" {
 output "frontend_deploy_role_arn" {
   description = "ARN of the IAM role for frontend deployment"
   value       = module.github_oidc.role_arn
+}
+
+# Frontend Outputs
+output "frontend_bucket_name" {
+  description = "Nome do bucket S3 para o frontend"
+  value       = module.frontend.s3_bucket_name
+}
+
+output "frontend_cloudfront_domain" {
+  description = "CloudFront domain name"
+  value       = module.frontend.cloudfront_domain_name
+}
+
+output "frontend_cloudfront_id" {
+  description = "CloudFront distribution ID"
+  value       = module.frontend.cloudfront_distribution_id
+}
+
+# ElastiCache Outputs
+output "elasticache_endpoint" {
+  description = "ElastiCache Redis endpoint"
+  value       = module.elasticache.elasticache_endpoint
+}
+
+output "elasticache_port" {
+  description = "ElastiCache Redis port"
+  value       = module.elasticache.elasticache_port
+}
+
+output "elasticache_connection_string" {
+  description = "ElastiCache Redis connection string (format: redis://:<auth-token>@<endpoint>:<port>)"
+  value       = "redis://:<auth-token>@${module.elasticache.elasticache_endpoint}:${module.elasticache.elasticache_port}"
+  sensitive   = true
 } 

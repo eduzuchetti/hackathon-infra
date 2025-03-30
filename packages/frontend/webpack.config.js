@@ -73,7 +73,7 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: './public/index.html',
-        // favicon: './public/favicon.ico',
+        // favicon: './public/Icon-JurisAssist.png',
         inject: true,
         minify: isProduction ? {
           removeComments: true,

@@ -59,6 +59,25 @@ variable "db_password" {
   sensitive   = true
 }
 
+# ElastiCache Configuration
+variable "elasticache_instance_type" {
+  description = "Instance type for ElastiCache"
+  type        = string
+  default     = "cache.t4g.micro"
+}
+
+variable "elasticache_num_cache_clusters" {
+  description = "Number of cache clusters for ElastiCache"
+  type        = number
+  default     = 1
+}
+
+variable "elasticache_auth_token" {
+  description = "Auth token (password) for ElastiCache Redis. Must be at least 16 characters."
+  type        = string
+  sensitive   = true
+}
+
 # OpenSearch Configuration
 variable "opensearch_master_user" {
   description = "Master username for OpenSearch"

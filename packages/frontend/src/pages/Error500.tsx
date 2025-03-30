@@ -8,9 +8,9 @@ import {
   Paper
 } from '@mui/material';
 import Grid from '../components/UI/Grid';
-import { Block as BlockIcon } from '@mui/icons-material';
+import { ErrorOutline } from '@mui/icons-material';
 
-const Error403: React.FC = () => {
+const Error500: React.FC = () => {
   return (
     <Container maxWidth="md">
       <Box
@@ -46,19 +46,20 @@ const Error403: React.FC = () => {
                   mb: 3
                 }}
               >
-                <BlockIcon sx={{ fontSize: 60, color: 'white' }} />
+                <ErrorOutline sx={{ fontSize: 60, color: 'white' }} />
               </Box>
               
               <Typography variant="h1" component="h1" align="center" sx={{ mb: 2, fontSize: 96 }}>
-                403
+                500
               </Typography>
               
               <Typography variant="h4" component="h2" align="center" sx={{ mb: 2 }}>
-                Acesso Negado
+                Erro no Servidor
               </Typography>
               
               <Typography variant="body1" align="center" sx={{ mb: 4, maxWidth: 600 }}>
-                Desculpe, você não tem permissão para acessar esta página. Por favor, verifique suas credenciais ou entre em contato com o administrador se acredita que isso é um erro.
+                Desculpe, ocorreu um erro interno no servidor. Nossa equipe técnica foi notificada e 
+                estamos trabalhando para resolver o problema o mais rápido possível.
               </Typography>
               
               <Box sx={{ mt: 2 }}>
@@ -80,4 +81,4 @@ const Error403: React.FC = () => {
   );
 };
 
-export default Error403; 
+export default Error500; 

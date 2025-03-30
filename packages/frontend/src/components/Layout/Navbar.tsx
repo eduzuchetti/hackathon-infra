@@ -20,17 +20,17 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
-  Container
+  Container,
+  Avatar
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Home as HomeIcon,
-  Info as InfoIcon,
   Login as LoginIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
   Search as SearchIcon,
-  Language as LanguageIcon
+  CalendarMonth as CalendarIcon
 } from '@mui/icons-material';
 
 interface NavbarProps {
@@ -52,7 +52,6 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [langAnchorEl, setLangAnchorEl] = useState<null | HTMLElement>(null);
   
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -60,10 +59,6 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   
   const handleMenuClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleLangMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setLangAnchorEl(event.currentTarget);
   };
   
   const handleDrawerToggle = () => {
@@ -76,22 +71,22 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
   };
   
   const menuItems = [
-    { text: 'Profile', icon: <PersonIcon />, onClick: () => navigate('/profile') },
-    { text: 'Logout', icon: <LogoutIcon />, onClick: handleLogout }
+    { text: 'Perfil', icon: <PersonIcon />, onClick: () => navigate('/profile') },
+    { text: 'Sair', icon: <LogoutIcon />, onClick: handleLogout }
   ];
   
   const navItems: NavItem[] = [
-    { text: 'Home', path: '/', icon: <HomeIcon /> },
-    { text: 'Painel', path: '/painel', icon: <PersonIcon /> },
-    { text: 'Processos', path: '/processos', icon: <PersonIcon /> },
-    { text: 'About', path: '/about', icon: <InfoIcon /> }
+    { text: 'Início', path: '/', icon: <HomeIcon /> },
+    { text: 'Painel', path: '/painel', icon: <PersonIcon />, requireAuth: true },
+    { text: 'Processos', path: '/processos', icon: <SearchIcon />, requireAuth: true },
+    { text: 'Calendário', path: '/calendario', icon: <CalendarIcon />, requireAuth: true }
   ];
   
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        {title}
-      </Typography>
+      <Box sx={{ my: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <img src="/assets/Logo-JurisAssist.png" alt="JurisAssist" style={{ height: 40 }} />
+      </Box>
       <Divider />
       <List>
         {navItems.map((item) => (
@@ -115,7 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               sx={{ textAlign: 'center' }}
             >
               <ListItemIcon><LoginIcon /></ListItemIcon>
-              <ListItemText primary="Login" />
+              <ListItemText primary="Entrar" />
             </ListItemButton>
           </ListItem>
         ) : (
@@ -125,7 +120,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               sx={{ textAlign: 'center' }}
             >
               <ListItemIcon><LogoutIcon /></ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText primary="Sair" />
             </ListItemButton>
           </ListItem>
         )}
@@ -152,15 +147,11 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
               </IconButton>
             )}
             
-            <Typography
-              variant="h6"
-              component="div"
+            <Box
               sx={{ 
                 display: 'flex', 
                 alignItems: 'center',
-                mr: 4,
-                color: 'text.primary',
-                fontWeight: 'bold'
+                mr: 4
               }}
             >
               <Link 
@@ -168,10 +159,11 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                 to="/" 
                 color="inherit" 
                 underline="none"
+                sx={{ display: 'flex', alignItems: 'center' }}
               >
-                {title}
+                <img src="/assets/Logo-JurisAssist.png" alt="JurisAssist" style={{ height: 40 }} />
               </Link>
-            </Typography>
+            </Box>
             
             {!isMobile && (
               <>
@@ -194,43 +186,25 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                     color="inherit"
                     sx={{ color: 'text.primary', mx: 1 }}
                   >
-                    Pricing
+                    Preços
                   </Button>
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <IconButton 
                     size="large" 
-                    aria-label="search" 
+                    aria-label="pesquisar" 
                     color="inherit"
                     sx={{ color: 'text.primary' }}
                   >
                     <SearchIcon />
                   </IconButton>
 
-                  <Button
-                    color="inherit"
-                    onClick={handleLangMenu}
-                    startIcon={<LanguageIcon />}
-                    sx={{ color: 'text.primary', ml: 1 }}
-                  >
-                    Eng
-                  </Button>
-                  <Menu
-                    anchorEl={langAnchorEl}
-                    open={Boolean(langAnchorEl)}
-                    onClose={() => setLangAnchorEl(null)}
-                  >
-                    <MenuItem>English</MenuItem>
-                    <MenuItem>Português</MenuItem>
-                    <MenuItem>Español</MenuItem>
-                  </Menu>
-
                   <Button 
                     color="inherit"
                     sx={{ color: 'text.primary', ml: 1 }}
                   >
-                    Support
+                    Suporte
                   </Button>
 
                   {!isAuthenticated ? (
@@ -239,7 +213,7 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                       onClick={() => loginWithRedirect()}
                       sx={{ color: 'text.primary', ml: 1 }}
                     >
-                      Sign In
+                      Entrar
                     </Button>
                   ) : (
                     <>
@@ -282,37 +256,18 @@ const Navbar: React.FC<NavbarProps> = ({ title }) => {
                       </Menu>
                     </>
                   )}
-
-                  <Button 
-                    variant="contained"
-                    sx={{ 
-                      ml: 2,
-                      backgroundColor: '#00ED64',
-                      color: 'black',
-                      '&:hover': {
-                        backgroundColor: '#00C957'
-                      },
-                      borderRadius: '4px',
-                      textTransform: 'none',
-                      fontWeight: 'medium',
-                      px: 2
-                    }}
-                  >
-                    Get Started
-                  </Button>
                 </Box>
               </>
             )}
           </Toolbar>
         </Container>
       </AppBar>
-      
       <Drawer
-        variant="temporary"
-        open={drawerOpen}
+        anchor="left"
+        open={drawerOpen && isMobile}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true, // Better mobile performance
+          keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
           display: { xs: 'block', md: 'none' },

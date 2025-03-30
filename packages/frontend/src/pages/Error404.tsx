@@ -1,63 +1,83 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Paper
+} from '@mui/material';
+import Grid from '../components/UI/Grid';
+import { ErrorOutline } from '@mui/icons-material';
 
-const ErrorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
-  text-align: center;
-`;
-
-const ErrorCode = styled.h1`
-  font-size: 7rem;
-  margin: 0;
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const ErrorTitle = styled.h2`
-  font-size: 2rem;
-  margin: 1rem 0 2rem;
-  color: #333;
-`;
-
-const ErrorMessage = styled.p`
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin-bottom: 2rem;
-  color: #666;
-`;
-
-const HomeButton = styled(Link)`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  text-decoration: none;
-  display: inline-block;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.primaryLight};
-  }
-`;
-
-const Error404 = () => {
+const Error404: React.FC = () => {
   return (
-    <ErrorContainer>
-      <ErrorCode>404</ErrorCode>
-      <ErrorTitle>Page Not Found</ErrorTitle>
-      <ErrorMessage>
-        Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or never existed in the first place.
-      </ErrorMessage>
-      <HomeButton to="/">Return to Home</HomeButton>
-    </ErrorContainer>
+    <Container maxWidth="md">
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '80vh'
+        }}
+      >
+        <Grid container spacing={3} justifyContent="center">
+          <Grid item xs={12}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: 5,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                border: '1px solid #e0e0e0',
+                borderRadius: 2
+              }}
+            >
+              <Box
+                sx={{
+                  width: 100,
+                  height: 100,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  bgcolor: 'warning.light',
+                  borderRadius: '50%',
+                  mb: 3
+                }}
+              >
+                <ErrorOutline sx={{ fontSize: 60, color: 'white' }} />
+              </Box>
+              
+              <Typography variant="h1" component="h1" align="center" sx={{ mb: 2, fontSize: 96 }}>
+                404
+              </Typography>
+              
+              <Typography variant="h4" component="h2" align="center" sx={{ mb: 2 }}>
+                Página Não Encontrada
+              </Typography>
+              
+              <Typography variant="body1" align="center" sx={{ mb: 4, maxWidth: 600 }}>
+                Desculpe, a página que você está procurando não existe ou foi movida. 
+                Por favor, verifique o URL ou retorne à página inicial.
+              </Typography>
+              
+              <Box sx={{ mt: 2 }}>
+                <Button
+                  component={RouterLink}
+                  to="/"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                >
+                  Voltar para a Página Inicial
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
