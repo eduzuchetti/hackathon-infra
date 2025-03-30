@@ -86,12 +86,16 @@ module.exports = (env, argv) => {
           minifyJS: true,
           minifyCSS: true,
           minifyURLs: true,
-        } : false
+        } : false,
+        templateParameters: {
+          PUBLIC_URL: 'http://localhost:3000'
+        }
       }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(isProduction ? 'production' : 'development'),
-        }
+        },
+        'process.env.PUBLIC_URL': JSON.stringify('')
       })
     ],
     optimization: {

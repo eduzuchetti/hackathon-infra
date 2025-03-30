@@ -1,0 +1,50 @@
+name: Auth0 Pages Deployment
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/frontend/auth0-pages/**'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'packages/frontend/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: packages/frontend
+        run: npm ci
+      
+      - name: Install specific dependencies for Auth0 pages
+        working-directory: packages/frontend
+        run: npm install --no-save html-minifier archiver auth0
+      
+      - name: Build Auth0 pages
+        working-directory: packages/frontend
+        run: npm run build:auth0-pages
+      
+      - name: Deploy Auth0 pages
+        working-directory: packages/frontend
+        run: npm run deploy:auth0-pages
+        env:
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: auth0-pages
+          path: packages/frontend/build-auth0/
+          retention-days: 5 

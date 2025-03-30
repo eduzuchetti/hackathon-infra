@@ -298,3 +298,66 @@ The project includes customized versions of commonly used Material UI components
 - `Button`: Extended MUI Button with consistent styling
 - `Card`: Configurable card component with title, image, and action support
 - `Layout components`: AppBar, Drawer, and responsive navigation 
+
+## Auth0 Custom Pages
+
+This project includes custom Auth0 login pages that match the application's Material UI design system. The custom pages provide a seamless user experience by maintaining consistent styling between the application and the authentication screens.
+
+### Customized Pages
+
+- **Login Page**: A Material UI styled login page with support for social connections and username/password login.
+
+### Building Auth0 Pages
+
+To build the Auth0 custom pages:
+
+```bash
+npm run build:auth0-pages
+```
+
+This will:
+1. Read the HTML templates from `auth0-pages` directory
+2. Minify the HTML, CSS, and JavaScript
+3. Generate files in the `build-auth0` directory
+4. Create zip files for deployment
+
+### Deploying Auth0 Pages
+
+To deploy the pages to your Auth0 tenant:
+
+```bash
+# Set required environment variables
+export AUTH0_DOMAIN=your-tenant.auth0.com
+export AUTH0_CLIENT_ID=your-client-id
+export AUTH0_CLIENT_SECRET=your-client-secret
+
+# Deploy the pages
+npm run deploy:auth0-pages
+```
+
+> **Note:** The client ID and secret must be from a Machine-to-Machine application with the `update:tenant_settings` permission for the Auth0 Management API.
+
+### GitHub Actions Workflow
+
+This project includes a GitHub Actions workflow that automatically builds and deploys Auth0 pages when changes are made to the `auth0-pages` directory. 
+
+To set up the workflow:
+
+1. Add the following secrets to your GitHub repository:
+   - `AUTH0_DOMAIN`: Your Auth0 domain
+   - `AUTH0_CLIENT_ID`: Client ID with Management API permissions
+   - `AUTH0_CLIENT_SECRET`: Client secret for the above client
+
+2. The workflow will run automatically on pushes to the `main` branch that include changes to the `auth0-pages` directory.
+
+3. You can also trigger the workflow manually from the GitHub Actions tab.
+
+### Customizing Auth0 Pages
+
+To modify the Auth0 pages:
+
+1. Edit the HTML files in the `auth0-pages` directory
+2. Build and deploy the pages using the commands above
+3. Verify the changes in your Auth0 tenant
+
+The custom pages use variables provided by Auth0's templating system, such as `{{ config.callbackURL }}`, which are replaced with the actual values when the page is rendered. 
