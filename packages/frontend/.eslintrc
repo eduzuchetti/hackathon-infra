@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:react/jsx-runtime"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "warn",
+    "prefer-const": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  }
+} 
