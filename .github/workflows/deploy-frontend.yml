@@ -16,7 +16,8 @@ permissions:
   contents: read
 
 jobs:
-  build-and-deploy:
+  test:
+    name: Test
     runs-on: ubuntu-latest
     
     steps:
@@ -33,21 +34,66 @@ jobs:
       - name: Install dependencies
         run: cd packages/frontend && npm ci
 
+      - name: Run tests
+        run: cd packages/frontend && npm test
+
+  build:
+    name: Build
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'packages/frontend/package-lock.json'
+
+      - name: Install dependencies
+        run: cd packages/frontend && npm ci
+
+      - name: Generate production Auth0 config
+        run: cd packages/frontend && npm run auth0:prod
+
       - name: Build
         run: cd packages/frontend && npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: packages/frontend/build/
+          retention-days: 1
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.FRONTEND_DEPLOY_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: arn:aws:iam::900720408713:role/github-actions-role-admin
+          aws-region: us-east-1
 
       - name: Deploy to S3
         run: |
-          aws s3 sync packages/frontend/build/ s3://${{ secrets.FRONTEND_S3_BUCKET }} --delete
+          aws s3 sync packages/frontend/build/ s3://hackathon-frontend-prod/ --delete
 
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.FRONTEND_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --distribution-id E1B7K018ZZB2MR \
             --paths "/*" 
