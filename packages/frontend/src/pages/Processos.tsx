@@ -25,11 +25,11 @@ import Grid from '../components/UI/Grid';
 const Processos: React.FC = () => {
   // Mock data for the table
   const mockData = [
-    { id: '9999999', prazo: '30/03/2025', movimentacao: 'Sentença', poloAtivo: 'Empresa A', poloPassivo: 'Empresa B', saneamento: 'Concluído' },
-    { id: '8888888', prazo: '30/03/2025', movimentacao: 'Impugnação', poloAtivo: 'Empresa C', poloPassivo: 'Empresa D', saneamento: 'Pendente' },
-    { id: '7777777', prazo: '30/03/2025', movimentacao: 'Contestação', poloAtivo: 'Empresa E', poloPassivo: 'Empresa F', saneamento: 'Concluído' },
-    { id: '6666666', prazo: '30/03/2025', movimentacao: 'Despacho', poloAtivo: 'Empresa G', poloPassivo: 'Empresa H', saneamento: 'Pendente' },
-    { id: '5555555', prazo: '30/03/2025', movimentacao: 'Perícia', poloAtivo: 'Empresa I', poloPassivo: 'Empresa J', saneamento: 'Concluído' },
+    { id: '1234567-89.2024.8.13.0702', prazo: '17/03/2025', movimentacao: 'Decisão interlocutória', poloAtivo: 'Réu condenado', poloPassivo: 'Ministério Público', saneamento: 'Aguardando resposta do reu' },
+    { id: '9876543-21.2024.8.13.0702', prazo: '20/03/2025', movimentacao: 'Sentença procedente', poloAtivo: 'Consumidor prejudicado', poloPassivo: 'Isabela Santos', saneamento: 'Recurso provido' },
+    { id: '1122334-55.2024.8.13.0702', prazo: '01/03/2025', movimentacao: 'Decisão interlocutória', poloAtivo: 'Empresa de Eventos ABC LTDA', poloPassivo: 'Indústria de Calçados LTDA', saneamento: 'Aguardando resposta do reu' },
+    { id: '4433221-99.2024.8.13.0702', prazo: '03/04/2025', movimentacao: 'Recurso improvido', poloAtivo: 'Oficial de Registro de Imóveis', poloPassivo: 'Agente público', saneamento: 'Será feito recurso' },
+    { id: '2233445-66.2024.8.13.0702', prazo: '30/03/2025', movimentacao: 'Sentença procedente', poloAtivo: 'Banco Cred Fácil S.A.', poloPassivo: 'União Federal', saneamento: 'Pendente de resposta do reu' },
   ];
 
   // State for pagination

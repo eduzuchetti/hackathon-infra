@@ -106,20 +106,12 @@ const Calendario: React.FC = () => {
   // Initialize mock data
   useEffect(() => {
     const mockEvents: ProcessoEvent[] = [
-      { id: '9999', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 4), title: 'Processo 9999', type: 'critico' },
-      { id: '3333', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9), title: 'Processo 3333', type: 'critico' },
-      { id: '3333', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10), title: 'Processo 3333', type: 'atencao' },
-      { id: '3333', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 11), title: 'Processo 3333', type: 'sem_risco' },
-      { id: '3333', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 12), title: 'Processo 3333', type: 'atencao' },
-      { id: '8673', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15), title: 'Processo 8673', type: 'atencao' },
-      { id: '1986', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 16), title: 'Processo 1986', type: 'critico' },
-      { id: '4444', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 17), title: 'Processo 4444', type: 'atencao' },
-      { id: '4445', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15), title: 'Processo 4445', type: 'sem_risco' },
-      { id: '2222', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 24), title: 'Processo 2222', type: 'sem_risco' },
-      { id: '4561', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 24), title: 'Processo 4561', type: 'atencao' },
-      { id: '43562', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 31), title: 'Processo 43562', type: 'critico' },
-      { id: 'conf', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 7), title: 'Conference', type: 'conference' },
-      { id: 'holiday', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22), title: 'Holiday', type: 'holiday' }
+      { id: '1234567-89.2024.8.13.0702', date: new Date(currentDate.getFullYear(), 3, 2), title: 'Processo 9999', type: 'critico' },
+      { id: '9876543-21.2024.8.13.0702', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 9), title: 'Processo 3333', type: 'critico' },
+      { id: '1122334-55.2024.8.13.0702', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 10), title: 'Processo 3333', type: 'atencao' },
+      { id: '4433221-99.2024.8.13.0702', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 11), title: 'Processo 3333', type: 'sem_risco' },
+      { id: '2233445-66.2024.8.13.0702', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 17), title: 'Processo 4444', type: 'atencao' },
+      { id: 'Feriado', date: new Date(currentDate.getFullYear(), currentDate.getMonth(), 22), title: 'Holiday', type: 'holiday' }
     ];
     
     setAllEvents(mockEvents);
