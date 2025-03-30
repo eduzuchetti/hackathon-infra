@@ -15,6 +15,8 @@ import Error404 from './pages/Error404';
 import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import TypographyDemo from './pages/TypographyDemo';
+import Painel from './pages/Painel';
+import { Box } from '@mui/material';
 
 function App() {
   return (
@@ -22,31 +24,38 @@ function App() {
       <StyledThemeProvider theme={theme}>
         <CssBaseline />
         <GlobalStyles />
-        <Router>
-          <Auth0ProviderWithNavigate>
-            <Navbar title="Hackathon App" />
-            <main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route 
-                  path="/dashboard" 
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route path="/about" element={<About />} />
-                <Route path="/typography" element={<TypographyDemo />} />
-                <Route path="/403" element={<Error403 />} />
-                <Route path="/404" element={<Error404 />} />
-                <Route path="*" element={<Error404 />} />
-              </Routes>
-            </main>
+        <Box sx={{ 
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh'
+        }}>
+          <Router>
+            <Auth0ProviderWithNavigate>
+              <Navbar title="Hackathon App" />
+              <Box component="main" sx={{ flexGrow: 1 }}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route path="/painel" element={<Painel />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/typography" element={<TypographyDemo />} />
+                  <Route path="/403" element={<Error403 />} />
+                  <Route path="/404" element={<Error404 />} />
+                  <Route path="*" element={<Error404 />} />
+                </Routes>
+              </Box>
+            </Auth0ProviderWithNavigate>
             <Footer />
-          </Auth0ProviderWithNavigate>
-        </Router>
+          </Router>
+        </Box>
       </StyledThemeProvider>
     </MuiThemeProvider>
   );
