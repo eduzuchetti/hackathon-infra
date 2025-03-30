@@ -180,14 +180,15 @@ module "app_alb" {
   
   target_port = 8080
   
-  health_check_path = "/health"
+  # Update health check path for Spring Boot application
+  health_check_path = "/api/v1/users"
   
   # In production, you might want to use HTTPS with a certificate
   # certificate_arn = "arn:aws:acm:REGION:ACCOUNT:certificate/CERTIFICATE_ID"
   # http_to_https_redirect = true
   
   # Enable deletion protection in production
-  enable_deletion_protection = true
+  enable_deletion_protection = false
   
   tags = {
     Environment = var.environment
@@ -243,31 +244,47 @@ module "app_cluster" {
       value = var.environment
     },
     {
-      name  = "DB_HOST"
-      value = module.database.db_instance_address
+      name  = "S3_BUCKET"
+      value = module.app_storage.bucket_id
     },
     {
-      name  = "DB_PORT"
-      value = "3306"
+      name  = "SPRING_DATASOURCE_URL"
+      value = "jdbc:mysql://${module.database.db_instance_address}:3306/${var.db_name}"
     },
     {
-      name  = "DB_NAME"
-      value = var.db_name
-    },
-    {
-      name  = "DB_USER"
+      name  = "SPRING_DATASOURCE_USERNAME"
       value = var.db_username
     },
     {
-      name  = "S3_BUCKET"
-      value = module.app_storage.bucket_id
+      name  = "SPRING_DATASOURCE_DRIVER_CLASS_NAME"
+      value = "com.mysql.cj.jdbc.Driver"
+    },
+    {
+      name  = "SPRING_JPA_HIBERNATE_DDL_AUTO"
+      value = "update"
+    },
+    {
+      name  = "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT"
+      value = "org.hibernate.dialect.MySQL8Dialect"
+    },
+    {
+      name  = "SPRING_MVC_HIDDENMETHOD_FILTER_ENABLED"
+      value = "true"
+    },
+    {
+      name  = "MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE"
+      value = "health,info"
+    },
+    {
+      name  = "MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS"
+      value = "always"
     }
   ]
   
   # Use Secrets Manager for sensitive information
   secrets = [
     {
-      name      = "DB_PASSWORD"
+      name      = "SPRING_DATASOURCE_PASSWORD"
       valueFrom = aws_ssm_parameter.db_password.arn
     }
   ]
@@ -277,9 +294,13 @@ module "app_cluster" {
     Environment = var.environment
   }
   
+  # Configure the load balancer
   load_balancer = {
     target_group_arn = module.app_alb.target_group_arn
   }
+  
+  # Pass the ALB security group ID
+  alb_security_group_id = module.app_alb.security_group_id
   
   # Configure health check grace period for load balancer
   health_check_grace_period_seconds = 120

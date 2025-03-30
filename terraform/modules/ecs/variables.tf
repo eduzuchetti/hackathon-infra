@@ -164,6 +164,12 @@ variable "load_balancer" {
   default = null
 }
 
+variable "alb_security_group_id" {
+  description = "Security group ID of the ALB"
+  type        = string
+  default     = null
+}
+
 variable "health_check_grace_period_seconds" {
   description = "Seconds to ignore failing load balancer health checks"
   type        = number
